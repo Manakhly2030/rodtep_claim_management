@@ -101,14 +101,19 @@ app_license = "MIT"
 # Document Events
 # ---------------
 # Hook on document methods and events
+doc_events={
+    "Rodtep Claimed Management":{
+        "on_submit":"rodtep_claim_management.rodtep_claim_management.doctype.rodtep_claimed_management.rodtep_claimed_management.create_jv_on_submit"
+    },
+    "Sales Invoice":{
+    # "validate":"rodtep_claim_management.rodtep_claim_management.doc_events.sales_invoice.validate",
+    "on_submit": "rodtep_claim_management.rodtep_claim_management.api.si_on_submit",
+	"on_cancel": "rodtep_claim_management.rodtep_claim_management.api.si_on_cancel"}
+}
 
-# doc_events = {
-#	"*": {
-#		"on_update": "method",
-#		"on_cancel": "method",
-#		"on_trash": "method"
-#	}
-# }
+doctype_js = {
+	"Sales Invoice" : "public/js/sales_invoice.js",
+}
 
 # Scheduled Tasks
 # ---------------
@@ -199,3 +204,10 @@ app_license = "MIT"
 # auth_hooks = [
 #	"rodtep_claim_management.auth.validate"
 # ]
+
+fixtures = [
+       {
+        "dt": "Custom Field", 
+        "filters":[["name","in",['Sales Invoice Item-fob_value','Sales Invoice Item-meis_rate','Sales Invoice Item-meis_value','Journal Entry-voucher_type','Company-meis_receivable_account','Company-meis_income_account','Sales Invoice-total_fob_value','Sales Invoice-total_meis','Sales Invoice-meis_jv']]]
+      },
+]
