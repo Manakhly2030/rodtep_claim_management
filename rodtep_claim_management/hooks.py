@@ -105,8 +105,11 @@ doc_events={
     "Rodtep Claimed Management":{
         "on_submit":"rodtep_claim_management.rodtep_claim_management.doctype.rodtep_claimed_management.rodtep_claimed_management.create_jv_on_submit"
     },
+    "Duty DrawBack Claim Management":{
+        "on_submit":"rodtep_claim_management.rodtep_claim_management.doctype.duty_drawback_claim_management.duty_drawback_claim_management.create_jv_on_submit"
+    },
     "Sales Invoice":{
-    # "validate":"rodtep_claim_management.rodtep_claim_management.doc_events.sales_invoice.validate",
+    "validate":"rodtep_claim_management.rodtep_claim_management.doc_events.sales_invoice.validate",
     "on_submit": "rodtep_claim_management.rodtep_claim_management.api.si_on_submit",
 	"on_cancel": "rodtep_claim_management.rodtep_claim_management.api.si_on_cancel"}
 }

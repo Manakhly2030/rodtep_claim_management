@@ -4,7 +4,7 @@ import frappe
 from frappe.model.document import Document
 # import datetime
 from frappe.utils import flt
-class RodtepClaimedManagement(Document):
+class DutyDrawBackClaimManagement(Document):
 	def validate(self):
 		total = 0.0
 		for row in self.rodtep_details:
@@ -29,7 +29,7 @@ def exp_je_data():
 	list_of_je = frappe.db.sql(f"""
 		SELECT rcm.je_no , rd.journal_entry_ref
 		From `tabRodtep Details` as rcm
-		Join `tabRodtep Claimed Management` as rd
+		Join `tabDuty DrawBack Claim Management` as rd
 		Where rd.docstatus !=2
 	""",as_list=True)
 	je = []
@@ -54,14 +54,14 @@ def journal_entry_list(start_date,end_date):
 	}
 	
 	je_data = frappe.db.sql(f""" 
-		select je.name as je_no, jea.debit_in_account_currency as debit_amount , je.cheque_date, je.cheque_no, si.shipping_bill_number as shipping_bill_no, c.meis_receivable_account as account
+		select je.name as je_no, jea.debit_in_account_currency as debit_amount , je.cheque_date, je.cheque_no, si.shipping_bill_number as shipping_bill_no, c.duty_drawback_receivable_account as account
 
 		from `tabJournal Entry` as je
 		LEFT JOIN `tabJournal Entry Account` as jea ON jea.parent = je.name
 		Left JOIN `tabSales Invoice` as si ON si.name = je.cheque_no
 		LEFT JOIN `tabCompany` as c ON c.name = je.company
 
-		where je.voucher_type = "RODTEP Entry" 
+		where je.voucher_type = "Duty Drawback Entry" 
 		and je.posting_date >= %(r_start_date)s 
 		and je.posting_date <= %(r_end_date)s
 		and jea.debit_in_account_currency > 0
@@ -72,23 +72,23 @@ def journal_entry_list(start_date,end_date):
 
 def create_jv_on_submit(self,method):
 	if(round(flt(self.total_debit_amount),4) == round(flt(self.script_amount),4)):
-		meis_receivable_account = frappe.db.get_value("Company", { "company_name": self.company}, "meis_receivable_account")
-		meis_income_account = frappe.db.get_value("Company", { "company_name": self.company}, "meis_income_account")
-		meis_cost_center = frappe.db.get_value("Company", { "company_name": self.company}, "meis_cost_center")
+		meis_receivable_account = frappe.db.get_value("Company", { "company_name": self.company}, "duty_drawback_receivable_account")
+		meis_income_account = frappe.db.get_value("Company", { "company_name": self.company}, "duty_drawback_income_account")
+		meis_cost_center = frappe.db.get_value("Company", { "company_name": self.company}, "duty_drawback_cost_center")
 		if not meis_receivable_account:
-			frappe.throw(_("Set RODTEP Receivable Account in Company"))
+			frappe.throw(_("Set Duty Drawback Receivable Account in Company"))
 		elif not meis_income_account:
-			frappe.throw(_("Set RODTEP Income Account in Company"))
+			frappe.throw(_("Set Duty Drawback Income Account in Company"))
 		elif not meis_cost_center:
-			frappe.throw(_("Set RODTEP Cost Center in Company"))
+			frappe.throw(_("Set Duty Drawback Cost Center in Company"))
 		else:
 			meis_jv = frappe.new_doc("Journal Entry")
-			meis_jv.voucher_type = "RODTEP Entry"
+			meis_jv.voucher_type = "Duty Drawback Entry"
 			meis_jv.posting_date = self.posting_date
 			meis_jv.company = self.company
 			meis_jv.cheque_no = self.name
 			meis_jv.cheque_date = self.posting_date
-			meis_jv.user_remark = "RODTEP against " + self.name 
+			meis_jv.user_remark = "Duty Drawback against " + self.name 
 			for row in self.rodtep_details:
 				meis_jv.append("accounts", {
 					"account": row.account,
