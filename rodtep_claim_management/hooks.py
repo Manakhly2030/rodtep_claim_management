@@ -211,6 +211,6 @@ doctype_js = {
 fixtures = [
        {
         "dt": "Custom Field", 
-        "filters":[["name","in",['Sales Invoice Item-fob_value','Sales Invoice Item-meis_rate','Sales Invoice Item-meis_value','Journal Entry-voucher_type','Company-meis_receivable_account','Company-meis_income_account','Sales Invoice-total_fob_value','Sales Invoice-total_meis','Sales Invoice-meis_jv','Sales Invoice-duty_drawback_','Sales Invoice-rodtep_jv','Company-meis_cost_center']]]
+        "filters":[["name","in",['Sales Invoice Item-fob_value','Sales Invoice Item-meis_rate','Sales Invoice Item-meis_value','Journal Entry-voucher_type','Company-meis_receivable_account','Company-meis_income_account','Sales Invoice-total_fob_value','Sales Invoice-total_meis','Sales Invoice-meis_jv','Sales Invoice-duty_drawback_','Sales Invoice-rodtep_jv','Company-meis_cost_center','Sales Invoice-fob_value_inr']]]
       },
 ]
