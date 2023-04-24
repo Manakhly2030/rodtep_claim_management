@@ -4,7 +4,7 @@
 frappe.ui.form.on('Duty DrawBack Claim Management', {
 	get_rodtep_entries:function(frm){
 		if (frm.doc.rodtep_details) {
-            for (var j = frm.doc.rodtap_details.length - 1; j >= 0; j--) {
+            for (var j = frm.doc.rodtep_details.length - 1; j >= 0; j--) {
                 cur_frm.get_field("rodtep_details").grid.grid_rows[j].remove();
             }
         }
@@ -15,7 +15,7 @@ frappe.ui.form.on('Duty DrawBack Claim Management', {
 				"end_date":frm.doc.end_date
 			},
 			callback: function(r) {
-				
+				if(r.message){
 				r.message.forEach(function(res) {
 					var childTable = cur_frm.add_child("rodtep_details");
 					childTable.je_no = res['je_no']
@@ -25,8 +25,14 @@ frappe.ui.form.on('Duty DrawBack Claim Management', {
 					childTable.cheque_date = res['cheque_date']
 					childTable.cheque_no = res['cheque_no']
 				})
-				
-				cur_frm.refresh();
+			}
+				else{
+					cur_frm.doc.rodtep_details = []
+	
+				}
+					// cur_frm.refresh();
+					cur_frm.refresh_field("rodtep_details")
+						
 					
 				
 			}

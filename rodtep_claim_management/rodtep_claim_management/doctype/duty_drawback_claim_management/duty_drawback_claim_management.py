@@ -3,6 +3,7 @@
 import frappe
 from frappe.model.document import Document
 # import datetime
+from frappe import _
 from frappe.utils import flt
 class DutyDrawBackClaimManagement(Document):
 	def validate(self):
@@ -25,12 +26,12 @@ class DutyDrawBackClaimManagement(Document):
 			jv.cancel()
 			self.journal_entry_ref = ''
 
-def exp_je_data():
+def exp_je_data(company):
 	list_of_je = frappe.db.sql(f"""
 		SELECT rcm.je_no , rd.journal_entry_ref
 		From `tabRodtep Details` as rcm
 		Join `tabDuty DrawBack Claim Management` as rd
-		Where rd.docstatus !=2
+		Where  rd.company='{company}' and rd.docstatus !=2
 	""",as_list=True)
 	je = []
 	for row in list_of_je:
@@ -40,8 +41,8 @@ def exp_je_data():
 
 
 @frappe.whitelist()
-def journal_entry_list(start_date,end_date):
-	list_of_je = exp_je_data()
+def journal_entry_list(start_date,end_date,company):
+	list_of_je = exp_je_data(company)
 	conditions = ""
 	if list_of_je:
 		conditions = " and je.name NOT IN {} ".format(
@@ -65,7 +66,7 @@ def journal_entry_list(start_date,end_date):
 		and je.posting_date >= %(r_start_date)s 
 		and je.posting_date <= %(r_end_date)s
 		and jea.debit_in_account_currency > 0
-		and je.docstatus < 2
+		and je.docstatus < 2 and je.company='{company}'
 		{conditions}
 	""",args,as_dict=1)
 	return je_data

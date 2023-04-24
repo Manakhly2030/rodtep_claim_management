@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 import frappe
 from frappe.model.document import Document
+from frappe import _
 # import datetime
 from frappe.utils import flt
 class RodtepClaimedManagement(Document):
@@ -25,12 +26,12 @@ class RodtepClaimedManagement(Document):
 			jv.cancel()
 			self.journal_entry_ref = ''
 
-def exp_je_data():
+def exp_je_data(company):
 	list_of_je = frappe.db.sql(f"""
 		SELECT rcm.je_no , rd.journal_entry_ref
 		From `tabRodtep Details` as rcm
 		Join `tabRodtep Claimed Management` as rd
-		Where rd.docstatus !=2
+		Where rd.company='{company}' and rd.docstatus !=2 
 	""",as_list=True)
 	je = []
 	for row in list_of_je:
@@ -40,21 +41,23 @@ def exp_je_data():
 
 
 @frappe.whitelist()
-def journal_entry_list(start_date,end_date):
-	list_of_je = exp_je_data()
+def journal_entry_list(start_date,end_date,company):
+	list_of_je = exp_je_data(company)
 	conditions = ""
 	if list_of_je:
 		conditions = " and je.name NOT IN {} ".format(
 				"(" + ", ".join([f'"{l}"' for l in list_of_je]) + ")")
 	r_start_date = start_date
-	r_end_date = end_date 
+	r_end_date = end_date
+
 	args = {
 		'r_start_date':r_start_date,
-		'r_end_date': r_end_date
+		'r_end_date': r_end_date,
+		
 	}
 	
 	je_data = frappe.db.sql(f""" 
-		select je.name as je_no, jea.debit_in_account_currency as debit_amount , je.cheque_date, je.cheque_no, si.shipping_bill_number as shipping_bill_no, c.meis_receivable_account as account
+		select je.name as je_no, jea.debit_in_account_currency as debit_amount , je.cheque_date, je.cheque_no, si.shipping_bill_number as shipping_bill_no, c.meis_receivable_account as account,je.company
 
 		from `tabJournal Entry` as je
 		LEFT JOIN `tabJournal Entry Account` as jea ON jea.parent = je.name
@@ -65,7 +68,7 @@ def journal_entry_list(start_date,end_date):
 		and je.posting_date >= %(r_start_date)s 
 		and je.posting_date <= %(r_end_date)s
 		and jea.debit_in_account_currency > 0
-		and je.docstatus < 2
+		and je.docstatus < 2 and je.company='{company}'
 		{conditions}
 	""",args,as_dict=1)
 	return je_data
