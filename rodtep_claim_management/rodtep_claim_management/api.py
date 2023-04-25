@@ -83,11 +83,11 @@ def create_jv(self):
 				else:
 					self.db_set('rodtep_jv',meis_jv.name)
 def cancel_jv(self, method):
-	if self.duty_drawback_jv:
-		jv = frappe.get_doc("Journal Entry", self.duty_drawback_jv)
+	if self.duty_drawback_:
+		jv = frappe.get_doc("Journal Entry", self.duty_drawback_)
 		jv.cancel()
-		self.duty_drawback_jv = ''
-	if self.get('meis_jv'):
-		jv = frappe.get_doc("Journal Entry", self.meis_jv)
+		self.duty_drawback_ = ''
+	if self.get('rodtep_jv'):
+		jv = frappe.get_doc("Journal Entry", self.rodtep_jv)
 		jv.cancel()
-		self.meis_jv = ''
+		self.rodtep_jv = ''
