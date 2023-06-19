@@ -102,11 +102,11 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 doc_events={
-    "Rodtep Claimed Management":{
-        "on_submit":"rodtep_claim_management.rodtep_claim_management.doctype.rodtep_claimed_management.rodtep_claimed_management.create_jv_on_submit"
+    "Rodtep Claim":{
+        "on_submit":"rodtep_claim_management.rodtep_claim_management.doctype.rodtep_claim.rodtep_claim.create_jv_on_submit"
     },
-    "Duty DrawBack Claim Management":{
-        "on_submit":"rodtep_claim_management.rodtep_claim_management.doctype.duty_drawback_claim_management.duty_drawback_claim_management.create_jv_on_submit"
+    "Duty DrawBack Claim":{
+        "on_submit":"rodtep_claim_management.rodtep_claim_management.doctype.duty_drawback_claim.duty_drawback_claim.create_jv_on_submit"
     },
     "Sales Invoice":{
     "validate":"rodtep_claim_management.rodtep_claim_management.doc_events.sales_invoice.validate",

@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "field:script_number",
- "creation": "2023-04-19 10:36:07.931858",
+ "creation": "2023-04-28 00:42:23.300863",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -48,7 +48,7 @@
   {
    "fieldname": "get_rodtep_entries",
    "fieldtype": "Button",
-   "label": "Get Duty Drawback Entries"
+   "label": "Get Rodtep Entries"
   },
   {
    "fieldname": "column_break_2",
@@ -68,12 +68,12 @@
   {
    "fieldname": "rodtep_entries_details_section",
    "fieldtype": "Section Break",
-   "label": "Duty Drawback Entries Details"
+   "label": "Rodtep Entries Details"
   },
   {
    "fieldname": "rodtep_details",
    "fieldtype": "Table",
-   "label": "Duty Drawback Details",
+   "label": "Rodtep Details",
    "options": "Rodtep Details"
   },
   {
@@ -112,7 +112,7 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Duty DrawBack Claim Management",
+   "options": "Rodtep Claim",
    "print_hide": 1,
    "read_only": 1
   }
@@ -120,10 +120,10 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-21 15:39:08.325787",
+ "modified": "2023-04-28 07:05:06.379011",
  "modified_by": "Administrator",
  "module": "Rodtep Claim Management",
- "name": "Duty DrawBack Claim Management",
+ "name": "Rodtep Claim",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
